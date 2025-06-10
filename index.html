@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Nanoparticles & Anti-PD-L1 Therapy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #006d77;
+      --secondary: #83c5be;
+      --accent: #ffddd2;
+      --dark: #1d3557;
+      --light: #f1faee;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+    }
+    
+    .slideshow-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 40px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      overflow-y: auto;
+    }
+    
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+    
+    .slide-content {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: 100px;
+    }
+    
+    .title-slide {
+      background: linear-gradient(135deg, #f1faee 0%, #e8f4f8 100%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .content-slide {
+      background: white;
+    }
+    
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin: 30px 0 20px 0;
+      padding-bottom: 8px;
+      border-bottom: 3px solid var(--secondary);
+      display: inline-block;
+    }
+    
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px 0;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #444;
+    }
+    
+    .highlight {
+      background-color: var(--accent);
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    
+    /* Text box before figures */
+    .text-box {
+      background-color: rgba(0,109,119,0.05);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid var(--primary);
+    }
+    
+    /* Results specific styles */
+    .figure-container {
+      margin: 40px 0;
+    }
+    
+    .figure {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+    
+    .figure img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .figure-caption {
+      font-size: 0.9rem;
+      color: #666;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .key-findings {
+      background-color: rgba(0,109,119,0.05);
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 5px 5px 0;
+    }
+    
+    .key-findings h4 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    
+    .key-findings ul {
+      padding-left: 20px;
+    }
+    
+    .key-findings li {
+      margin-bottom: 8px;
+    }
+    
+    .nav-arrows {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      gap: 15px;
+      z-index: 10;
+    }
+    
+    .arrow {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .arrow:hover {
+      background-color: var(--secondary);
+      transform: scale(1.1);
+    }
+    
+    .slide-indicator {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    
+    .indicator-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(0,109,119,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator-dot.active {
+      background-color: var(--primary);
+      transform: scale(1.2);
+    }
+    
+    @media (max-width: 768px) {
+      .slide {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+      
+      .arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="slideshow-container">
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide title-slide active" id="slide1">
+      <div class="slide-content" style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 40px 20px;">
+        <h1 style="font-size: 2rem; line-height: 1.5; text-align: center;">
+          Plant-nanoparticles enhance anti–PD-L1 efficacy by shaping human commensal microbiota metabolites
+        </h1>
+
+        <div class="preface" style="margin-top: 30px; text-align: center;">
+          <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\paper-precae.jpg" alt="Paper preface" style="max-width: 90%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        </div>
+
+        <div style="margin-top: 30px; max-width: 700px; margin-left: auto; margin-right: auto; text-align: center;">
+          <p style="font-size: 1.1rem; color: #333;">
+            Published in <strong>Nature</strong> (<em>Impact Factor: 16.6</em>)<br>
+            First author: Lin Zhang · Corresponding author: Dr. Jianming Zhang<br>
+            DOI: <a href="https://doi.org/10.1038/s41467-025-56498-2" target="_blank">10.1038/s41467-025-56498-2</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Introduction -->
+    <div class="slide content-slide" id="slide2">
+      <div class="slide-content">
+        <h2>Introduction</h2>
+
+        <p style="font-size: 1.2rem; font-weight: 500; color: #1d3557;"> <p><strong> Background:</strong> The gut microbiota plays a central role in shaping immune responses and may critically influence the efficacy of immune checkpoint blockade therapies, such as anti-PD-L1.</p>
+        <p><strong> Rationale:</strong> Patient responses to anti-PD-L1 are inconsistent, and growing evidence suggests that diet and microbiota composition are key contributors to this variability.</p>
+        <p><strong> Unresolved Question:</strong> Can dietary plant-derived nanoparticles reshape the gut microbiome in a way that improves the efficacy of immune checkpoint blockade therapies?</p>
+          <div class="text-box" style="border-left: 5px solid var(--secondary); background-color: rgba(131,197,190,0.15);">
+          <h3 style="margin-top: 0; font-size: 1.4rem; color: var(--primary);"> Central Hypothesis</h3>
+          <p style="font-size: 1.15rem;"> <p><strong><em>Ginger-derived nanoparticles (GELNs) selectively target specific gut bacteria and reprogram their metabolic output—leading to increased production of anti-tumor metabolites such as DHA—which enhances the host's response to anti-PD-L1 immunotherapy.</em></strong></p>
+        </div>
+      </div>
+    </div>
+
+<!-- SLIDE 3: Results Part 1 -->
+<div class="slide content-slide" id="slide3">
+  <div class="slide-content">
+    <h2>RESULT 1 – PNPs Are Selectively Taken Up by Human Gut Bacteria</h2>
+
+    <div class="text-box" style="text-align: justify;">
+      <strong>Main Question:</strong> Can edible <strong>plant-derived nanoparticles (PNPs)</strong> selectively interact with <strong>gut bacteria</strong>?
+    </div>
+
+    <!-- Figure 1A -->
+    <div class="figure-container">
+      <h3>Fig. 1A – Experimental Workflow</h3>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-1A.jpg" alt="Figure 1A" style="width: 80%;">
+        <div class="figure-caption"><strong>Figure 1A:</strong> Overview of <strong>PNP extraction, labeling, incubation, and analysis pipeline</strong>.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand explanation</summary>
+          <p>
+            <strong>PNPs</strong> were isolated from four edible plants. Two nanoparticle types were recovered: <strong>Nano10</strong> (10,000×g pellet) and <strong>ELNs</strong> (100,000×g pellet). Both were fluorescently labeled with <strong>PKH26</strong> and incubated with <strong>human fecal bacteria</strong> <em>in vitro</em> or administered to <strong>gnotobiotic mice</strong> colonized with <strong>human microbiota</strong> <em>in vivo</em>.
+          </p>
+          <p>
+            Internalization was measured by <strong>flow cytometry (FACS)</strong> and <strong>16S rRNA gene sequencing</strong> to determine which <strong>bacterial taxa</strong> took up the labeled particles.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 1B -->
+    <div class="figure-container">
+      <h3>Fig. 1B – Bacterial Families Preferentially Uptake GELNs</h3>
+      <div class="text-box" style="text-align: justify;">
+        To investigate whether edible <strong>plant-derived nanoparticles (PNPs)</strong> are selectively internalized by <strong>gut bacteria</strong>, the authors incubated <strong>PKH26-labeled PNPs</strong> (including <strong>Nano10</strong> and <strong>ELNs</strong> from <strong>ginger, garlic, lemon, and aloe</strong>) with <strong>human fecal samples</strong> and analyzed uptake via <strong>flow cytometry</strong> and <strong>16S rRNA sequencing</strong>.
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-1B.jpg" alt="Figure 1B" style="width: 80%;">
+        <div class="figure-caption"><strong>Figure 1B:</strong> Bar plots showing which <strong>bacterial families</strong> internalize PNPs.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>The bar plot shows <strong>bacterial taxa</strong> enriched in the <strong>PKH26-positive fraction</strong> for each <strong>PNP type</strong>. <strong>GELNs</strong> are predominantly taken up by <strong>Lachnospiraceae</strong> and <strong>Lactobacillaceae</strong>, highlighting <strong>selective</strong> and <strong>reproducible microbial targeting</strong> rather than <strong>random association</strong>.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 1D -->
+    <div class="figure-container">
+      <h3>Fig. 1D – PNP Uptake Patterns Are Reproducible Across Systems</h3>
+      <div class="text-box" style="text-align: justify;">
+        To determine whether <strong>PNP-bacterial uptake patterns</strong> observed <em>in vitro</em> hold true <em>in vivo</em>, the authors performed a <strong>PCoA</strong> based on <strong>16S rRNA sequencing data</strong> comparing <strong>human stool cultures</strong> (<em>in vitro</em>) and <strong>gnotobiotic mice</strong> colonized with the same <strong>human microbiota</strong> (<em>in vivo</em>).
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-1D.jpg" alt="Figure 1D" style="width: 60%;">
+        <div class="figure-caption"><strong>Figure 1D:</strong> <strong>PCoA plot</strong> based on <strong>16S sequencing data</strong> showing sample clustering by <strong>bacterial uptake pattern</strong>.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>The <strong>PCoA plot</strong> shows that <strong>bacterial communities</strong> interacting with <strong>PNPs</strong> cluster similarly in both <strong>human stool</strong> (<em>in vitro</em>) and <strong>mouse colon</strong> (<em>in vivo</em>), despite overall <strong>microbiota differences</strong>. This indicates that <strong>PNPs</strong> consistently target the same <strong>bacterial groups</strong>, regardless of the environment.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Take-Home Message -->
+    <div class="figure-container">
+      <h3>Take-Home Message</h3>
+      <div class="text-box" style="background-color: #ffddd2; border-left: 5px solid #e29578; padding: 10px; text-align: justify;">
+        <p>
+          <strong>Plant-derived PNPs</strong> are selectively internalized by specific <strong>gut bacterial families</strong>, both <em>in vitro</em> and <em>in vivo</em>. This targeting is driven by the <strong>lipid composition</strong> of the nanoparticles, which differs between <strong>Nano10</strong> and <strong>ELNs</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 4: Results Part 2 -->
+<div class="slide content-slide" id="slide4">
+  <div class="slide-content">
+    <h2>RESULT 2 – Lipid and Amino Acid Composition Shapes Microbial Targeting</h2>
+    <p style="text-align: justify;"><strong>Main Question:</strong> What are the <strong>molecular drivers</strong> (lipids, amino acids) that explain why certain <strong>bacteria</strong> preferentially take up specific <strong>PNPs</strong>?</p>
+
+    <!-- Figure 3A -->
+    <div class="figure-container">
+      <h3>Fig. 3A — Heatmap of Bacteria–Molecule Correlations</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>To answer this, the authors correlated the <strong>lipid</strong> and <strong>amino acid composition</strong> of <strong>PNPs</strong> with the <strong>bacterial taxa</strong> identified earlier in both <strong>human</strong> and <strong>mouse</strong> samples.</p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-3A.jpg" alt="Figure 3A" style="width: 60%;">
+        <div class="figure-caption">Figure 3A: Heatmap of Spearman’s correlations between bacterial taxa and PNP-associated molecules.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>
+            Reveals that certain <strong>lipids</strong> and <strong>amino acids</strong> on PNPs—such as <strong>phosphatidylinositol (PI)</strong>, <strong>digalactosyldiacylglycerol (DGDG)</strong>, <strong>glycine</strong>, and <strong>valine</strong>—are strongly correlated with specific <strong>bacterial taxa</strong>. These molecules act as selective <strong>“Eat Me” signals</strong>, promoting targeted uptake by bacteria like <em><strong>Lactobacillus reuteri</strong></em>, <em><strong>Ruminococcus bromii</strong></em>, <strong>Lachnospiraceae</strong>, and <strong>Bacteroidaceae</strong>. This suggests that the <strong>surface chemistry of PNPs</strong> plays a key role in guiding <strong>bacterial recognition and internalization</strong>.<br>
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 3B–C -->
+    <div class="figure-container">
+      <h3>Fig. 3B & 3C — Volcano Plots Highlight Key Molecular Drivers</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>To identify the most relevant <strong>bacterial–molecule interactions</strong>, the authors used <strong>volcano plots</strong> showing both <strong>effect size</strong> (x-axis) and <strong>statistical significance</strong> (y-axis).</p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-3B-C.jpg" alt="Figure 3B-C" style="width: 100%;">
+        <div class="figure-caption">Figures 3B and 3C: Volcano plots showing correlation strength vs. significance for <strong>lipids</strong> (B) and <strong>amino acids</strong> (C).</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>
+            The <strong>volcano plots</strong> show which <strong>lipids</strong> (3B) and <strong>amino acids</strong> (3C) are most strongly linked to <strong>bacterial uptake</strong>. <strong>PI</strong> is enriched in <strong>PNPs</strong> targeting <strong>Lachnospiraceae</strong> and <strong>Ruminococcaceae</strong>, while <strong>glycine</strong> and <strong>valine</strong> drive uptake by the same families. This confirms that <strong>surface molecules</strong> shape <strong>selective bacterial interactions</strong>.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Take-Home Message -->
+    <div class="figure-container">
+      <h3>Take-Home Message</h3>
+      <div class="text-box" style="background-color: #ffddd2; border-left: 5px solid #e29578; padding: 10px; text-align: justify;">
+        <p><strong>Selective bacterial uptake</strong> of <strong>PNPs</strong> is not random — it is orchestrated by specific <strong>lipid</strong> and <strong>amino acid</strong> components, highlighting the potential to engineer <strong>microbiota-targeted nanocarriers</strong>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SLIDE 5: Results Part 3 -->
+<div class="slide content-slide" id="slide5">
+  <div class="slide-content">
+    <h2>RESULT 3 – GELNs Reshape Microbial Metabolites and Activate Host Pathways</h2>
+
+    <p style="text-align: justify;">
+      <strong>Main Question:</strong> How do <strong>ginger-derived edible nanoparticles (GELNs)</strong> impact <strong>gut microbial metabolism</strong>, and do these changes influence <strong>host metabolic pathways</strong>?
+    </p>
+
+    <p style="text-align: justify;">
+      <strong>Method:</strong> Mice were orally treated with <strong>nanoparticles</strong> from four edible plants (ginger, garlic, lemon, aloe). <strong>Untargeted LC-MS/MS metabolomics</strong> was performed on intestinal and fecal samples. Results were mapped to <strong>KEGG pathways</strong> to assess host metabolic modulation.
+    </p>
+
+    <!-- Figure 4A -->
+    <div class="figure-container">
+      <h3>Fig. 4A — GELNs Uniquely Enrich Beneficial Gut Metabolites</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>The authors compared <strong>metabolite profiles</strong> across treatments using a clustered <strong>heatmap</strong> of significantly altered gut metabolites.</p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-4A.jpg" alt="Figure 4A" style="width: 60%;">
+        <div class="figure-caption"><strong>Figure 4A:</strong> Heatmap of gut metabolite levels, with marked elevation of <strong>DHA</strong> and <strong>EPA</strong> in GELN-treated mice.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>
+      Untargeted metabolomics shows that only <strong>GELNs</strong> (ginger-derived ELNs) significantly boost gut levels of 
+      <strong>omega-3 fatty acids</strong> like <strong>DHA</strong> and <strong>EPA</strong>, known for their 
+      <strong>anti-inflammatory effects</strong>. Other <strong>PNPs</strong> (e.g., garlic, lemon, aloe) do not induce this response, 
+      highlighting a <strong>unique ability</strong> of GELNs to <strong>reprogram microbial metabolism</strong>.
+    </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 5B -->
+    <div class="figure-container">
+      <h3>Fig. 5B — GELNs Activate Host Unsaturated Fatty Acid Biosynthesis</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>To link microbial changes to host effects, the altered metabolites were mapped to <strong>host KEGG pathways</strong>.</p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-5B.jpg" alt="Figure 5B" style="width: 60%;">
+        <div class="figure-caption"><strong>Figure 5B:</strong> KEGG pathway analysis reveals selective activation of <strong>unsaturated fatty acid biosynthesis</strong> in GELN-treated mice.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>
+      <strong>GELNs</strong> uniquely enhance the 
+      <strong>microbial biosynthesis of unsaturated fatty acids</strong>, including 
+      <strong>DHA (docosahexaenoic acid)</strong> and 
+      <strong>EPA (eicosapentaenoic acid)</strong>. Other 
+      <strong>plant-derived nanoparticles</strong> do not induce this shift. These 
+      <strong>anti-inflammatory lipids</strong> suggest that GELNs reprogram the 
+      <strong>gut microbiota</strong> in ways that may support 
+      <strong>immune regulation</strong> and <strong>anti-tumor activity</strong>.
+    </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Take-Home Message -->
+    <div class="figure-container">
+      <h3>Take-Home Message</h3>
+      <div class="text-box" style="background-color: #ffddd2; border-left: 5px solid #e29578; padding: 10px; text-align: justify;">
+        <p>
+          <strong>GELNs</strong> reprogram the <strong>gut microbiome</strong> to produce <strong>DHA</strong> and <strong>EPA</strong>, which in turn activate <strong>host lipid biosynthesis pathways</strong>—a potential mechanism for shaping an <strong>anti-inflammatory</strong> and <strong>immunomodulatory</strong> environment.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 6: Results Part 4 -->
+<div class="slide content-slide" id="slide6">
+  <div class="slide-content">
+    <h2>RESULT 4 – GELNs Improve Anti–PD-L1 Immunotherapy by Boosting Microbial DHA via miRNA</h2>
+
+    <p style="text-align: justify;">
+      <strong>Main Question:</strong> Do <strong>GELNs</strong> enhance anti–PD-L1 immunotherapy by modulating gut bacterial metabolism through their RNA cargo?
+    </p>
+
+    <p style="text-align: justify;">
+      <strong>Method:</strong> The authors evaluated whether <strong>GELN treatment</strong> could improve the efficacy of anti–PD-L1 therapy in mice. They focused on the mechanism, particularly <strong>aly-miR159a-3p</strong>, a GELN-derived miRNA predicted to target the bacterial <em>plc</em> gene — a negative regulator of <strong>DHA accumulation</strong>.
+    </p>
+
+    <!-- Figure 6C -->
+    <div class="figure-container">
+      <h3>Fig. 6C — GELNs + Anti–PD-L1 Reduce Tumor Growth and Metastasis</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>
+          To assess the therapeutic effect, mice with melanoma tumors were treated with anti–PD-L1 antibody plus either <strong>scrambled miRNA</strong>, <strong>GNV-derived RNAs</strong>, or <strong>GELN RNA-containing supernatant</strong>.
+        </p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-6C.jpg" alt="Figure 6C" style="width: 80%;">
+        <div class="figure-caption"><strong>Figure 6C:</strong> GELN-derived RNAs improve immunotherapy outcomes in vivo.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+          <p>The panel on the left shows <strong>tumor and lung images</strong> collected at day 28. The top row displays excised tumors, while the bottom row shows lungs with visible metastases.</p>
+          <p>On the right, bar graphs quantify both <strong>tumor volume</strong> (top) and <strong>lung metastases</strong> (bottom):</p>
+          <ul>
+            <li><strong>Gray bar:</strong> PBS + anti–PD-L1 (control) → high tumor burden and metastasis</li>
+            <li><strong>Blue bar:</strong> Scrambled miRNA + anti–PD-L1 → no improvement</li>
+            <li><strong>Purple bar:</strong> GELN-RNAs + anti–PD-L1 → reduced tumor burden and metastasis</li>
+            <li><strong>Orange bar:</strong> GELN RNA supernatant + anti–PD-L1 → strongest reduction</li>
+          </ul>
+          <p>Tumors are visibly smaller and lungs less affected in the GELN-RNA–treated groups.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 7F–H -->
+    <div class="figure-container">
+      <h3>Fig. 7F–H — GELN miRNA Suppresses Bacterial <em>plc</em> and Elevates DHA</h3>
+
+      <div class="text-box" style="text-align: justify;">
+        <p>
+          To explore the mechanism, the authors investigated <strong>aly-miR159a-3p</strong>, a plant-derived miRNA found in GELNs, predicted to target the bacterial gene <em>plc</em> (phospholipase C).
+        </p>
+      </div>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-7F-G-H.jpg" alt="Figure 7F–H" style="width: 80%;">
+        <div class="figure-caption"><strong>Figure 7F–H:</strong> aly-miR159a-3p silences bacterial <em>plc</em> to promote DHA accumulation.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+
+          <p>
+      To understand how <strong>GELNs</strong> influence <strong>DHA metabolism</strong>, the authors investigated <strong>aly-miR159a-3p</strong>, a plant microRNA found in ginger ELNs that targets the bacterial <strong>plc</strong> gene (encoding <strong>phospholipase C</strong>, an enzyme that breaks down DHA).
+    </p>
+    <p>
+      In a <strong>ChIP-like assay</strong> (<strong>Fig. 7F</strong>), aly-miR159a-3p selectively binds to the <em>plc</em> gene in <em>Clostridium perfringens</em> DNA.
+    </p>
+    <p>
+      <strong>RT-qPCR</strong> (<strong>Fig. 7G</strong>) shows reduced <em>plc</em> mRNA only with aly-miR159a-3p.
+    </p>
+    <p>
+      <strong>Western blot</strong> (<strong>Fig. 7H</strong>) confirms downregulation of PLC protein under the same condition.
+    </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Take-Home Message -->
+    <div class="figure-container">
+      <h3>Take-Home Message</h3>
+      <div class="text-box" style="background-color: #ffddd2; border-left: 5px solid #e29578; padding: 10px; text-align: justify;">
+        <p>
+          <strong>GELNs enhance anti–PD-L1 therapy</strong> by delivering <strong>aly-miR159a-3p</strong> to gut bacteria. This silences the bacterial gene <strong><em>plc</em></strong>, increases <strong>DHA</strong> availability, and reprograms microbial metabolism — ultimately fostering a systemic anti-tumor immune environment.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Results Part 5 -->
+<div class="slide content-slide" id="slide7">
+  <div class="slide-content">
+    <h2>RESULT 5 – Microbiota-Derived DHA & EPA Suppress Tumor PD-L1 Expression and Enhance Anti–PD-L1 Therapy</h2>
+
+    <p style="text-align: justify;">
+      <strong>Main Question:</strong> Can <strong>microbial metabolites</strong> generated by <strong>GELNs</strong> — especially <strong>DHA</strong> and <strong>EPA</strong> — directly influence tumors to enhance <strong>immune checkpoint blockade</strong> therapy?
+    </p>
+
+    <p style="text-align: justify;">
+      <strong>Method:</strong> The authors examined whether <strong>DHA</strong> (docosahexaenoic acid) and <strong>EPA</strong> (eicosapentaenoic acid), two <strong>omega-3 fatty acids</strong> elevated in the gut by GELNs, could reach tumors and suppress <strong>PD-L1</strong> expression. They also investigated the mechanism behind this effect, focusing on the transcription factor <strong>c-Myc</strong>.
+    </p>
+
+    <!-- Figure 8 -->
+    <div class="figure-container">
+      <h3>Fig. 8 — DHA Reduces Tumor Growth and PD-L1 Expression in Vivo</h3>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-8.jpg" alt="Figure 8" style="width: 89%;">
+        <div class="figure-caption"><strong>Figure 8:</strong> DHA + anti–PD-L1 therapy reduces tumors and improves survival.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+              <p>
+      <strong>Figure 8</strong> shows that treating melanoma-bearing mice with <strong>DHA and EPA</strong>, alone or in combination with <strong>anti–PD-L1 antibody</strong>, reduces tumor size and lung metastases.
+    </p>
+    <p>
+      The <strong>combination therapy</strong> has the strongest impact, significantly lowering tumor burden and improving survival.
+    </p>
+    <p>
+      <strong>qPCR and Western blot</strong> confirm reduced <strong>PD-L1 expression</strong> in tumors from DHA/EPA-treated mice.
+    </p>
+    <p>
+      These results suggest that microbiota-derived <strong>DHA and EPA</strong> suppress PD-L1 expression in tumors and enhance the efficacy of immune checkpoint therapy.
+    </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Figure 10F -->
+    <div class="figure-container">
+      <h3>Fig. 10F — DHA Suppresses PD-L1 Promoter Activity via c-Myc Inhibition</h3>
+
+      <div class="figure" style="text-align: center;">
+        <img src="C:\Users\clob9\Desktop\Tutorial - Gut Microbiota\Figure-10-F.jpg" alt="Figure 10F" style="width: 50%;">
+        <div class="figure-caption"><strong>Figure 10F:</strong> DHA blocks <strong>c-Myc</strong> binding to the <strong>PD-L1</strong> promoter, silencing its transcription.</div>
+
+        <details style="margin-top: 10px; font-size: 0.95rem; color: #444; text-align: justify;">
+          <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">Click to expand interpretation</summary>
+
+          <p><strong>To dissect the mechanism</strong> by which <strong>DHA</strong> downregulates <strong>PD-L1</strong> expression, the authors performed a <strong>luciferase reporter assay</strong>. This assay measures promoter activity: if <strong>PD-L1</strong> is transcriptionally active, the luciferase signal is high.</p>
+
+          <p><strong>Tumor cells</strong> were transfected with a luciferase construct driven by the <strong>PD-L1 promoter</strong> and then treated with <strong>DHA</strong>.</p>
+
+          <p><strong>Result:</strong> DHA significantly suppresses luciferase activity, indicating that it inhibits <strong>PD-L1 transcription</strong>.</p>
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Take-Home Message -->
+    <div class="figure-container">
+      <h3>Take-Home Message</h3>
+      <div class="text-box" style="background-color: #ffddd2; border-left: 5px solid #e29578; padding: 10px; text-align: justify;">
+        <p>
+          <strong>DHA, produced by GELN-educated gut microbes, travels to tumors where it transcriptionally represses PD-L1 expression, enhancing the efficacy of anti–PD-L1 immunotherapy. This epigenetic silencing occurs through interference with c-Myc–dependent promoter activity, as shown in Fig. 10F.</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Conclusion Slide -->
+<div class="slide content-slide" id="slide8">
+  <div class="slide-content">
+    <h2>CONCLUSION – Connecting Gut, Tumor, and Therapy</h2>
+
+    <div class="text-box" style="text-align: justify;">
+      <p>
+        <strong>Take-Home Message:</strong><br>
+        <em>Ginger-derived nanoparticles (GELNs)</em> selectively target gut bacteria, reprogramming their metabolism to produce <strong>DHA</strong>, which in turn <strong>suppresses tumor PD-L1 expression</strong> and significantly enhances <strong>anti–PD-L1 immunotherapy</strong>.
+      </p>
+    </div>
+
+    <h3>🧬 Central Mechanistic Pathway</h3>
+    <ul style="text-align: justify;">
+      <li><strong>Selective Uptake:</strong> GELNs are internalized by <em>Lachnospiraceae</em> and <em>Lactobacillaceae</em>, guided by lipid and amino acid composition.</li>
+      <li><strong>Metabolic Reprogramming:</strong> Bacteria increase production of DHA and EPA, key anti-inflammatory metabolites.</li>
+      <li><strong>miRNA Delivery:</strong> GELNs deliver <strong>aly-miR159a-3p</strong>, which silences bacterial <strong>plc</strong>, blocking DHA degradation.</li>
+      <li><strong>Tumor Modulation:</strong> DHA epigenetically suppresses <strong>PD-L1</strong> by interfering with <strong>c-Myc</strong> transcription factor activity.</li>
+      <li><strong>Therapeutic Synergy:</strong> Combination of DHA and anti–PD-L1 therapy reduces tumor burden and improves survival.</li>
+    </ul>
+
+    <h3>🌿 Implications and Future Outlook</h3>
+    <ul style="text-align: justify;">
+      <li>Plant-derived nanoparticles can act as natural immunotherapy enhancers.</li>
+      <li>Reveals a new axis of gut microbiota–tumor communication.</li>
+      <li>Supports the idea of integrating nutrition into cancer immunotherapy.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SLIDE 9: Thank You Slide -->
+<div class="slide content-slide" id="slide9">
+  <div class="slide-content" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+    <div class="thank-you-container" style="background: linear-gradient(135deg, rgba(0,109,119,0.1) 0%, rgba(255,221,210,0.2) 100%); border-radius: 20px; padding: 40px; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <h2 style="font-size: 3rem; color: #006d77; margin-bottom: 20px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        🙏 Thank You!
+      </h2>
+      
+      <p style="font-size: 1.8rem; color: #1d3557; margin: 30px 0; line-height: 1.5; font-weight: 500;">
+        Let's discuss how plant nanoparticles could revolutionize immunotherapy
+      </p>
+      
+      <div class="animated-icon" style="margin: 40px auto; width: 120px; height: 120px; background: linear-gradient(45deg, #ffddd2, #83c5be); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); animation: pulse 2s infinite;">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712100.png" alt="Thank You Icon" style="width: 60px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+      </div>
+      
+      <div class="contact-info" style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed rgba(0,109,119,0.3);">
+        <p style="font-size: 1.2rem; color: #666;">
+          <strong>Cloé BRENNA, PhD Student - Tutorial : Origin and consequences of microbiota imbalances on human health.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .thank-you-container {
+    transition: all 0.5s ease;
+  }
+  
+  .thank-you-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  }
+</style>
+
+
+  <!-- Navigation Arrows -->
+  <div class="nav-arrows">
+    <div class="arrow prev">←</div>
+    <div class="arrow next">→</div>
+  </div>
+
+  <!-- Slide Indicator Dots -->
+  <div class="slide-indicator">
+    <div class="indicator-dot active" data-slide="1"></div>
+    <div class="indicator-dot" data-slide="2"></div>
+    <div class="indicator-dot" data-slide="3"></div>
+    <div class="indicator-dot" data-slide="4"></div>
+    <div class="indicator-dot" data-slide="5"></div>
+    <div class="indicator-dot" data-slide="6"></div>
+    <div class="indicator-dot" data-slide="7"></div>
+    <div class="indicator-dot" data-slide="8"></div>
+    <div class="indicator-dot" data-slide="9"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const slides = document.querySelectorAll('.slide');
+      const dots = document.querySelectorAll('.indicator-dot');
+      const prevBtn = document.querySelector('.prev');
+      const nextBtn = document.querySelector('.next');
+      let currentSlide = 0;
+
+      // Initialize slides
+      function showSlide(n) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+      }
+
+      // Next/previous controls
+      function nextSlide() {
+        showSlide(currentSlide + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentSlide - 1);
+      }
+
+      // Dot controls
+      dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+          showSlide(parseInt(this.dataset.slide) - 1);
+        });
+      });
+
+      // Button controls
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      // Keyboard controls
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight') {
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          prevSlide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
